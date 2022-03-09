@@ -5,6 +5,7 @@
 #include "UI/DataWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "ClickerData/ClickerGameInstance.h"
+#include "ClickerData/BrawlersPrimaryDataAsset.h"
 
 DEFINE_LOG_CATEGORY_STATIC(MenuBrawlerController, All, All)
 
@@ -39,7 +40,7 @@ bool AMenuBrawlerController::TouchBegan()
 
 	if (!GetWorld() || !GameInstance) return false;
 
-	GameInstance->AddCoins(1);
+	GameInstance->AddCoins();
 
 	return IsPressed;
 }

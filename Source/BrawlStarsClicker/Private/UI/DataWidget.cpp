@@ -4,6 +4,7 @@
 #include "UI/DataWidget.h"
 #include "Components/TextBlock.h"
 #include "ClickerData/ClickerGameInstance.h"
+#include "ClickerCoreData.h"
 
 void UDataWidget::NativeOnInitialized()
 {
@@ -11,9 +12,15 @@ void UDataWidget::NativeOnInitialized()
 
 	UClickerGameInstance* GameInstance = Cast< UClickerGameInstance>(GetWorld()->GetGameInstance());
 	GameInstance->OnCoinsCountChanged.AddUObject(this, &UDataWidget::OnCoinsDataTextUpdate);
+	GameInstance->OnGemsCountChanged.AddUObject(this, &UDataWidget::OnGemsDataTextUpdate);
 }
 
-void UDataWidget::OnCoinsDataTextUpdate(int32 ActuallyCoinsCount)
+void UDataWidget::OnCoinsDataTextUpdate(FMoneyStruct* ActuallyCoinsCount)
 {
-	CoinDataText->SetText(FText::FromString(FString("Coins: ") + FString::FromInt(ActuallyCoinsCount)));
+	CoinsDataText->SetText(FMoneyStructUtils::GetTexted(ActuallyCoinsCount));
+}
+
+void UDataWidget::OnGemsDataTextUpdate(FMoneyStruct* ActuallyGemsCount)
+{
+	GemsDataText->SetText(FMoneyStructUtils::GetTexted(ActuallyGemsCount));
 }
