@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "BrawlStarsClicker/BrawlStarsClickerGameModeBase.h"
 #include "ClickerData/BrawlersPrimaryDataAsset.h"
+#include "UI/ShopItemrWidget.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogGameInstance, All, All)
 
@@ -45,6 +46,8 @@ void UClickerGameInstance::CreateAndSaveGame()
 	ClickerSaveGame->Gems = FMoneyStruct(0, 0, 0, 0);
 	ClickerSaveGame->CurrentBrawler = BrawlersEnum::Shelly;
 	ClickerSaveGame->AvailableBrawlers.Add(BrawlersEnum::Shelly);
+	ClickerSaveGame->CurrentSkin = BrawlersSkins::Shelly_Default;
+	ClickerSaveGame->AvailableSkins.Add(BrawlersSkins::Shelly_Default);
 
 	UGameplayStatics::SaveGameToSlot(ClickerSaveGame, SaveSlotName, UserIndex);
 }
@@ -56,8 +59,13 @@ void UClickerGameInstance::LoadGame()
 
 	Coins = ClickerSaveGame->Coins;
 	Gems = ClickerSaveGame->Gems;
+
 	CurrentBrawler = ClickerSaveGame->CurrentBrawler;
 	AvailableBrawlers = ClickerSaveGame->AvailableBrawlers;
+
+	CurrentSkin = ClickerSaveGame->CurrentSkin;
+	AvailableSkins = ClickerSaveGame->AvailableSkins;
+
 	AvailableBoosts = ClickerSaveGame->AvailableBoosts;
 	if (!BrawlersInfoData) return;
 	ClickCoefficient = BrawlersInfoData->GetBrawlerInfoByEnum(CurrentBrawler)->ClickCoefficient;
@@ -66,4 +74,3 @@ void UClickerGameInstance::LoadGame()
 
 	OnBrawlerChanged.Broadcast(CurrentBrawler);
 }
-

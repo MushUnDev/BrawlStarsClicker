@@ -7,6 +7,7 @@
 #include "DataWidget.generated.h"
 
 class UTextBlock;
+struct FMoneyStruct;
 
 UCLASS()
 class BRAWLSTARSCLICKER_API UDataWidget : public UUserWidget
@@ -15,10 +16,14 @@ class BRAWLSTARSCLICKER_API UDataWidget : public UUserWidget
 
 protected:
 	UPROPERTY(meta = (BindWidget))
-		UTextBlock* CoinDataText;
+		UTextBlock* CoinsDataText;
+
+	UPROPERTY(meta = (BindWidget))
+		UTextBlock* GemsDataText;
 
 	virtual void NativeOnInitialized() override;
 
 private:
-	void OnCoinsDataTextUpdate(int32 ActuallyCoinsCount);
+	void OnCoinsDataTextUpdate(FMoneyStruct* ActuallyCoinsCount);
+	void OnGemsDataTextUpdate(FMoneyStruct* ActuallyCoinsCount);
 };

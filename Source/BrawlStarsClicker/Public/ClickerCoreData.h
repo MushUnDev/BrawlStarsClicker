@@ -146,12 +146,14 @@ public:
 UENUM(BlueprintType)
 enum class BrawlersEnum : uint8
 {
+	Null,
 	Colt UMETA(DisplayName = "Colt"),
 	Shelly UMETA(DisplayName = "Shelly"),
 	Barley UMETA(DisplayName = "Barley"),
 	El_Primo UMETA(DisplayName = "El Primo"),
 	Leon UMETA(DisplayName = "Leon"),
-	EightBit UMETA(DisplayName = "8-bit")
+	EightBit UMETA(DisplayName = "8-bit"),
+	Crow UMETA(DisplayName = "Crow")
 };
 
 USTRUCT(BlueprintType)
@@ -178,6 +180,7 @@ struct FBrawlerPropereties
 UENUM(BlueprintType)
 enum class BoostsEnum : uint8
 {
+	Null,
 	ClickRash,
 	AutoClick,
 	BigRandomClick,
@@ -202,5 +205,67 @@ struct FBoostsPropereties
 		bool IsGemPrice = false;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "BoostsProperties", meta = (EditCondition = "IsGemPrice"))
+		UTexture2D* GemIcon;
+};
+
+UENUM(BlueprintType)
+enum class BrawlersSkins : uint8
+{
+	Null UMETA(DisplayName = "NULL"),
+	//Shelly
+	Shelly_Default UMETA(DisplayName = "Shelly Default"),
+	Shelly_Bandit UMETA(DisplayName = "Shelly Bandit"),
+	Shelly_Witch UMETA(DisplayName = "Shelly Witch"),
+
+	//Crown
+	Crow_Default UMETA(DisplayName = "Crow Default"),
+	Crow_White UMETA(DisplayName = "Crow White"),
+	Crow_Phenix UMETA(DisplayName = "Crow Phenix"),
+
+	//Colt
+	Colt_Default UMETA(DisplayName = "Colt Default"),
+	Colt_Royal_Agent UMETA(DisplayName = "Colt Royal Agent"),
+	Colt_Rockstar UMETA(DisplayName = "Colt Rockstar"),
+
+	//Barley
+	Barley_Default UMETA(DisplayName = "Barley Default"),
+	Barley_Banker UMETA(DisplayName = "Barley Banker"),
+	Barley_Lamberjack UMETA(DisplayName = "Barley Lamberjack"),
+
+	//El Primo
+	El_Pirmo_Default UMETA(DisplayName = "El Primo Default"),
+	El_Pirmo_Rudo UMETA(DisplayName = "El Primo Rudo"),
+	El_Pirmo_Ray UMETA(DisplayName = "El Primo Ray"),
+
+	//Leon
+	Leon_Default UMETA(DisplayName = "Leon Default"),
+	Leon_Shark UMETA(DisplayName = "Leon Shark"),
+	Leon_Gold UMETA(DisplayName = "Leon Gold"),
+};
+
+USTRUCT(BlueprintType)
+struct FSkinPropereties
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SkinsProperties")
+		FText Name;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SkinsProperties")
+		bool IsDefaultSkin = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SkinsProperties", meta = (EditCondition = "!IsDefaultSkin"))
+		FMoneyStruct Price;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SkinsProperties")
+		USkeletalMesh* Skin;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SkinsProperties", meta = (EditCondition = "!IsDefaultSkin"))
+		UTexture2D* ShopIcon;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SkinsProperties", meta = (EditCondition = "!IsDefaultSkin"))
+		bool IsGemPrice = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SkinsProperties", meta = (EditCondition = "IsGemPrice && !IsDefaultSkin"))
 		UTexture2D* GemIcon;
 };

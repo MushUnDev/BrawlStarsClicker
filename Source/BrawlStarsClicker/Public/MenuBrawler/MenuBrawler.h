@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "ClickerCoreData.h"
 #include "MenuBrawler.generated.h"
 
 class UCameraComponent;
@@ -31,5 +32,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+private:
+	BrawlersEnum CurrentBrawler;
 
 };

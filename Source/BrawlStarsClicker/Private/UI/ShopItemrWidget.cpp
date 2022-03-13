@@ -60,6 +60,11 @@ void UShopItemrWidget::SetBoostEnum(BoostsEnum BoostEn)
 	CurrentBoost = BoostEn;
 }
 
+void UShopItemrWidget::SetSkinEnum(BrawlersSkins SkinEn)
+{
+	CurrentSkin = SkinEn;
+}
+
 void UShopItemrWidget::SetCoinIconVisibility(ESlateVisibility Visivbility)
 {
 	CoinIcon->SetVisibility(Visivbility); 

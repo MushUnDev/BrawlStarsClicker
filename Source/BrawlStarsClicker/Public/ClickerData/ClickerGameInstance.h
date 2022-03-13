@@ -16,6 +16,8 @@ DECLARE_MULTICAST_DELEGATE(FOnGameLoadedSignature)
 class UClickerSaveGame;
 class UBrawlersPrimaryDataAsset;
 class UBoostsPrimaryDataAsset;
+class UBrawlersSkinsPrimaryDataAsset;
+class UShopItemrWidget;
 class USaveGame;
 
 UCLASS()
@@ -50,6 +52,17 @@ public:
 	void SetCurrentBrawlerClass(AActor* NewBralwerClass) { CurrentBrawlerClass = NewBralwerClass; }
 
 
+	UBrawlersSkinsPrimaryDataAsset* GetSkinsInfoData() { return SkinsInfoData; }
+
+	bool IsSkinAvailable(BrawlersSkins Skin) const { return AvailableSkins.Contains(Skin); }
+
+	bool IsSkinCurrent(BrawlersSkins Skin) { return CurrentSkin == Skin; }
+
+	BrawlersSkins* GetCurrentSkin() { return &CurrentSkin; }
+
+	void AddAvailableSkin(BrawlersSkins Skin) { AvailableSkins.Add(Skin); };
+
+
 	FMoneyStruct* GetCurrentMoney() { return &Coins; }
 
 	FMoneyStruct* GetCurrentGems() { return &Gems; }
@@ -77,6 +90,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "ClickerData")
 		UBoostsPrimaryDataAsset* BoostsInfoData;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "ClickerData")
+		UBrawlersSkinsPrimaryDataAsset* SkinsInfoData;
+
 private:
 	FMoneyStruct Coins;
 	FMoneyStruct Gems;
@@ -88,6 +104,9 @@ private:
 	int32 ClickCoefficient;
 
 	TArray<BoostsEnum> AvailableBoosts;
+
+	BrawlersSkins CurrentSkin;
+	TArray<BrawlersSkins> AvailableSkins;
 
 	FString SaveSlotName = TEXT("BaseClickerSlot");
 	uint32 UserIndex = 0;

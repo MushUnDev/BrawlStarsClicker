@@ -8,6 +8,7 @@
 #include "ClickerData/BrawlersPrimaryDataAsset.h"
 #include "ClickerData/ClickerGameInstance.h"
 #include "ClickerData/ClickerSaveGame.h"
+#include "ClickerData/BrawlersSkinsPrimaryDataAsset.h"
 
 void UCharacterChapterWidget::NativeOnInitialized()
 {
@@ -100,12 +101,16 @@ void UCharacterChapterWidget::OnShopItem(UShopItemrWidget* BrawlerItem)
 	auto BrawlerInfo = BrawlersInfoData->GetBrawlerInfoByEnum(BrawlerItem->GetCurrentBrawler());
 	if (!BrawlerInfo) return;
 
+	auto SkinsInfoData = Cast<UBrawlersSkinsPrimaryDataAsset>(GameInstance->GetSkinsInfoData());
+	if (!SkinsInfoData) return;
+
 	if (FMoneyStructUtils::TryToBuy(&BrawlerInfo->Price, GameInstance->GetCurrentMoney()))
 	{
 		FMoneyStructUtils::Buy(&BrawlerInfo->Price, GameInstance->GetCurrentMoney());
 
 		GameInstance->OnCoinsCountChanged.Broadcast(GameInstance->GetCurrentMoney());
 		GameInstance->AddAvailableBrawler(BrawlerItem->GetCurrentBrawler());
+		GameInstance->AddAvailableSkin(SkinsInfoData->GetDefaultSKinByBrawlerEnum(BrawlerItem->GetCurrentBrawler()));
 		GameInstance->SetClickerCoefficient(BrawlerInfo->ClickCoefficient);
 
 		BrawlerItem->SetCoinIconVisibility(ESlateVisibility::Hidden);
@@ -140,19 +145,20 @@ void UCharacterChapterWidget::OnAvailableItem(UShopItemrWidget* BrawlerItem)
 	auto BrawlerInfo = BrawlersInfoData->GetBrawlerInfoByEnum(BrawlerItem->GetCurrentBrawler());
 	if (!BrawlerInfo) return;
 
-	if (*GameInstance->GetCurrentBrawler() == BrawlerItem->GetCurrentBrawler()) return;
+	if (*GameInstance->GetCurrentBrawler() != BrawlerItem->GetCurrentBrawler())
+	{
+		auto CurrentBrawlerClassCopy = GameInstance->GetCurrentBrawlerClass();
 
-	auto CurrentBrawlerClassCopy = GameInstance->GetCurrentBrawlerClass();
+		CurrentBrawlerClassCopy->Destroy();
 
-	GameInstance->SetCurrentBrawlerClass(GetWorld()->SpawnActorAbsolute(BrawlerInfo->BrawlerClass, BrawlersInfoData->GetBrawlerTransform()));
+		GameInstance->SetCurrentBrawlerClass(GetWorld()->SpawnActorAbsolute(BrawlerInfo->BrawlerClass, BrawlersInfoData->GetBrawlerTransform()));
 
-	CurrentBrawlerClassCopy->Destroy();
+		*GameInstance->GetCurrentBrawler() = BrawlerItem->GetCurrentBrawler();
 
-	*GameInstance->GetCurrentBrawler() = BrawlerItem->GetCurrentBrawler();
+		CurrentBrawlerShopItemWidget = BrawlerItem;
 
-	CurrentBrawlerShopItemWidget = BrawlerItem;
-
-	GameInstance->SetClickerCoefficient(BrawlerInfo->ClickCoefficient);
+		GameInstance->SetClickerCoefficient(BrawlerInfo->ClickCoefficient);
+	}
 
 	GameInstance->OnBrawlerChanged.Broadcast(BrawlerItem->GetCurrentBrawler());
 }

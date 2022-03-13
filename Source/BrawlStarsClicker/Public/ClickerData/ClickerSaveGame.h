@@ -34,6 +34,13 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "ClickerData")
 		TArray<BoostsEnum> AvailableBoosts;
 
+	UPROPERTY(VisibleAnywhere, Category = "ClickerData")
+		BrawlersSkins CurrentSkin;
+
+	UPROPERTY(VisibleAnywhere, Category = "ClickerData")
+		TArray<BrawlersSkins> AvailableSkins;
+
+
 	UClickerSaveGame();
 
 };

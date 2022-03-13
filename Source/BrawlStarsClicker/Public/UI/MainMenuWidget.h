@@ -8,6 +8,8 @@
 
 class USettingsWidget;
 class UDataWidget;
+class UShopWidget;
+class UMinigamesWidget;
 
 UCLASS()
 class BRAWLSTARSCLICKER_API UMainMenuWidget : public UUserWidget
@@ -21,8 +23,16 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 		UDataWidget* BP_DataWidget;
 
+	UPROPERTY(meta = (BindWidget))
+		UShopWidget* BP_ShopWidget;
+
+	UPROPERTY(meta = (BindWidget))
+		UMinigamesWidget* BP_MinigamesWidget;
+
+
 	virtual void NativeOnInitialized() override;
 
 private:
 	void OnSettings(bool Visibility);
+	void OnShop(bool VisibilityFlag);
 };
